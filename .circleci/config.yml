@@ -5,17 +5,17 @@ workflows:
   build:
     jobs:
       - build:
-        filters:
-          branches:
-            only:
-              - main
+          filters:
+            branches:
+              only:
+                - main
       - deploy:
-        filters:
-          branches:
-            only:
-              - main
-        requires:
-          - build
+          filters:
+            branches:
+              only:
+                - main
+          requires:
+            - build
 
 jobs:
   build:
@@ -36,10 +36,10 @@ jobs:
           key: dependency-cache-{{ checksum "package-lock.json" }}
           paths:
             - ./node_modules
-  -deploy:
+  deploy:
     docker:
       - image: circleci/node:10.16.3
     steps:
-      -run:
+      - run:
         name: deploy-application
         command: ssh -i "EC2-victor.pem" ubuntu@ec2-34-244-87-76.eu-west-1.compute.amazonaws.com/;git clone https://github.com/VMaderaAlbors/SimpleApplication.git; source SimpleApplication/deploy.sh"
