@@ -9,6 +9,13 @@ workflows:
           branches:
             only:
               - main
+      - deploy:
+        filters:
+          branches:
+            only:
+              - main
+        requires:
+          - build
 
 jobs:
   build:
@@ -19,7 +26,7 @@ jobs:
       - checkout
       - run:
           name: update-npm
-          command: 'sudo npm install -g npm@5'
+          command: "sudo npm install -g npm@5"
       - restore_cache:
           key: dependency-cache-{{ checksum "package-lock.json" }}
       - run:
@@ -29,3 +36,10 @@ jobs:
           key: dependency-cache-{{ checksum "package-lock.json" }}
           paths:
             - ./node_modules
+  -deploy:
+    docker:
+      - image: circleci/node:10.16.3
+    steps:
+      -run:
+        name: deploy-application
+        command: ssh -i "EC2-victor.pem" ubuntu@ec2-34-244-87-76.eu-west-1.compute.amazonaws.com/;git clone https://github.com/VMaderaAlbors/SimpleApplication.git; source SimpleApplication/deploy.sh"
