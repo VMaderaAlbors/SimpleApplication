@@ -42,7 +42,4 @@ jobs:
     steps:
       - run:
         name: deploy-application
-        command: 
-        ssh -i "EC2-victor.pem" ubuntu@ec2-34-244-87-76.eu-west-1.compute.amazonaws.com/
-        git clone https://github.com/VMaderaAlbors/SimpleApplication.git
-        source SimpleApplication/deploy.sh
+        command: ssh -i "EC2-victor.pem" ubuntu@ec2-34-244-87-76.eu-west-1.compute.amazonaws.com/; git clone https://github.com/VMaderaAlbors/SimpleApplication.git; source SimpleApplication/deploy.sh
